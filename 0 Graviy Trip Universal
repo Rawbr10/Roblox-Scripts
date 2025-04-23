@@ -1,0 +1,87 @@
+local lIIlIlIIllIllIlIIlIIlIIl = game.Players.LocalPlayer
+local lIlllIlIlIlIIlIlIlIIIllI = game:GetService("CoreGui")
+local lIIIIlIIlIlIIIIIIIlIllIl = Instance.new("ScreenGui")
+lIIIIlIIlIlIIIIIIIlIllIl.Name = "lIIIlllIlIlIIlIlIIIlIIlIl"
+lIIIIlIIlIlIIIIIIIlIllIl.ResetOnSpawn = false
+lIIIIlIIlIlIIIIIIIlIllIl.Parent = lIlllIlIlIlIIlIlIlIIIllI
+
+local IlIlIIlIlIlIlIlIIlllIIIl = Instance.new("Frame")
+IlIlIIlIlIlIlIlIIlllIIIl.Size = UDim2.new(0, 300, 0, 90)
+IlIlIIlIlIlIlIlIIlllIIIl.Position = UDim2.new(0.5, -150, 0.5, -45)
+IlIlIIlIlIlIlIlIIlllIIIl.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+IlIlIIlIlIlIlIlIIlllIIIl.Active = true
+IlIlIIlIlIlIlIlIIlllIIIl.Draggable = true
+IlIlIIlIlIlIlIlIIlllIIIl.BorderSizePixel = 0
+Instance.new("UICorner", IlIlIIlIlIlIlIlIIlllIIIl).CornerRadius = UDim.new(0, 10)
+IlIlIIlIlIlIlIlIIlllIIIl.Parent = lIIIIlIIlIlIIIIIIIlIllIl
+
+local IlIlIlIIIIIlIIlIIIlIIllI = Instance.new("TextButton")
+IlIlIlIIIIIlIIlIIIlIIllI.Size = UDim2.new(1, -20, 0, 50)
+IlIlIlIIIIIlIIlIIIlIIllI.Position = UDim2.new(0, 10, 0, 10)
+IlIlIlIIIIIlIIlIIIlIIllI.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+IlIlIlIIIIIlIIlIIIlIIllI.TextColor3 = Color3.fromRGB(255, 255, 255)
+IlIlIlIIIIIlIIlIIIlIIllI.Font = Enum.Font.GothamBold
+IlIlIlIIIIIlIIlIIIlIIllI.TextScaled = true
+IlIlIlIIIIIlIIlIIIlIIllI.Text = "Toggle: OFF"
+Instance.new("UICorner", IlIlIlIIIIIlIIlIIIlIIllI).CornerRadius = UDim.new(0, 8)
+IlIlIlIIIIIlIIlIIIlIIllI.Parent = IlIlIIlIlIlIlIlIIlllIIIl
+
+local lIIIIllIllIIIIlIIlIlIlIl = Instance.new("TextLabel")
+lIIIIllIllIIIIlIIlIlIlIl.Size = UDim2.new(1, -20, 0, 20)
+lIIIIllIllIIIIlIIlIlIlIl.Position = UDim2.new(0, 10, 0, 65)
+lIIIIllIllIIIIlIIlIlIlIl.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+lIIIIllIllIIIIlIIlIlIlIl.Text = string.char(77,97,100,101,32,66,121,32,64,98,111,116,114,101,97,108,49,32,111,110,32,116,105,107,116,111,107)
+lIIIIllIllIIIIlIIlIlIlIl.TextColor3 = Color3.new(1, 1, 1)
+lIIIIllIllIIIIlIIlIlIlIl.TextScaled = true
+lIIIIllIllIIIIlIIlIlIlIl.Font = Enum.Font.Gotham
+Instance.new("UICorner", lIIIIllIllIIIIlIIlIlIlIl).CornerRadius = UDim.new(0, 6)
+lIIIIllIllIIIIlIIlIlIlIl.Parent = IlIlIIlIlIlIlIlIIlllIIIl
+
+local lllIIlIllllIlIlIlIlIlIlI = false
+local lIIlIlIllIIlIlllIIIllIIl = workspace.Gravity
+
+local function lIIlIIIIlIlIlIlIIIlIIIlI()
+	lllIIlIllllIlIlIlIlIlIlI = not lllIIlIllllIlIlIlIlIlIlI
+	local lIlIllllIIlIIIIIIllIIlll = lIIlIlIIllIllIlIIlIIlIIl.Character or lIIlIlIIllIllIlIIlIIlIIl.CharacterAdded:Wait()
+	local lIIIIIIIIIlIllIIlIlIIlIl = lIlIllllIIlIIIIIIllIIlll:FindFirstChildOfClass("Humanoid")
+	
+	if lllIIlIllllIlIlIlIlIlIlI then
+		IlIlIlIIIIIlIIlIIIlIIllI.Text = "Toggle: ON"
+		workspace.Gravity = 0
+		while lllIIlIllllIlIlIlIlIlIlI and lIIIIIIIIIlIllIIlIlIIlIl do
+			lIIIIIIIIIlIllIIlIlIIlIl:ChangeState(Enum.HumanoidStateType.Ragdoll)
+			task.wait(0.1)
+		end
+	else
+		IlIlIlIIIIIlIIlIIIlIIllI.Text = "Toggle: OFF"
+		workspace.Gravity = lIIlIlIllIIlIlllIIIllIIl
+	end
+end
+
+IlIlIlIIIIIlIIlIIIlIIllI.MouseButton1Click:Connect(lIIlIIIIlIlIlIlIIIlIIIlI)
+
+lIIlIlIIllIllIlIIlIIlIIl.CharacterAdded:Connect(function()
+	lllIIlIllllIlIlIlIlIlIlI = false
+	workspace.Gravity = lIIlIlIllIIlIlllIIIllIIl
+end)
+
+pcall(function()
+	local lIlIIIllIIllllIIlIlIIlII = Instance.new("Folder")
+	lIlIIIllIIllllIIlIlIIlII.Name = "DO_NOT_TOUCH"
+	lIlIIIllIIllllIIlIlIIlII.Parent = script
+
+	local lIlIIlIlIIIIIlIIlIlIlIl = Instance.new("StringValue")
+	lIlIIlIlIIIIIlIIlIlIlIl.Name = "LOCKED"
+	lIlIIlIlIIIIIlIIlIlIlIl.Value = tostring(math.random(100000, 999999))
+	lIlIIlIlIIIIIlIIlIlIlIl.Parent = lIlIIIllIIllllIIlIlIIlII
+
+	local IlllIIIlIIlIIIlIIlIIIlIl = Instance.new("NumberValue")
+	IlllIIIlIIlIIIlIIlIIIlIl.Name = "SessionID"
+	IlllIIIlIIlIIIlIIlIIIlIl.Value = tick()
+	IlllIIIlIIlIIIlIIlIIIlIl.Parent = lIlIIIllIIllllIIlIlIIlII
+
+	local IIIlIIlIIlIllIIlIllIlIIl = Instance.new("BoolValue")
+	IIIlIIlIIlIllIIlIllIlIIl.Name = "VerifiedRun"
+	IIIlIIlIIlIllIIlIllIlIIl.Value = true
+	IIIlIIlIIlIllIIlIllIlIIl.Parent = lIlIIIllIIllllIIlIlIIlII
+end)
