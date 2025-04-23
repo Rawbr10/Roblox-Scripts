@@ -1,0 +1,367 @@
+local player = game.Players.LocalPlayer    
+local gui = player:WaitForChild("PlayerGui"):FindFirstChild("FunGui")    
+if gui then gui:Destroy() end    
+    
+gui = Instance.new("ScreenGui")    
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling  
+gui.DisplayOrder = 1000  
+gui.Name = "FunGui"    
+gui.ResetOnSpawn = false    
+gui.Enabled = true    
+gui.Parent = player:WaitForChild("PlayerGui")    
+    
+local function notify(title, msg)    
+	pcall(function()    
+		game.StarterGui:SetCore("SendNotification", {    
+			Title = title,    
+			Text = msg,    
+			Duration = 5    
+		})    
+	end)    
+end    
+    
+local hasTpTool = false    
+local invis_on = false    
+local noclip_on = false    
+local noclipConn    
+local flyConn    
+local jump_on = false    
+        
+local frame = Instance.new("Frame", gui)    
+frame.Size = UDim2.new(0, 240, 0, 320)    
+frame.Position = UDim2.new(0.5, -120, 0.5, -160)    
+frame.BackgroundColor3 = Color3.fromRGB(40, 0, 80)    
+frame.Active = true    
+frame.Draggable = true    
+frame.BorderSizePixel = 0    
+frame.Visible = false    
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)    
+    
+local title = Instance.new("TextLabel", frame)    
+title.Size = UDim2.new(1, 0, 0, 30)    
+title.Text = "Fun Gui"    
+title.BackgroundTransparency = 1    
+title.TextScaled = true    
+title.TextColor3 = Color3.new(1, 1, 1)    
+title.Font = Enum.Font.GothamBold    
+    
+local scroll = Instance.new("ScrollingFrame", frame)    
+scroll.Position = UDim2.new(0, 0, 0, 30)    
+scroll.Size = UDim2.new(1, 0, 1, -30)    
+scroll.CanvasSize = UDim2.new(0, 0, 0, 1200)    
+scroll.ScrollBarThickness = 6    
+scroll.BackgroundTransparency = 1    
+local layout = Instance.new("UIListLayout", scroll)    
+layout.Padding = UDim.new(0, 8)    
+layout.HorizontalAlignment = Enum.HorizontalAlignment.Center    
+    
+local function createButton(text, color)    
+	local btn = Instance.new("TextButton", scroll)    
+	btn.Size = UDim2.new(0.9, 0, 0, 28)    
+	btn.Text = text    
+	btn.BackgroundColor3 = color    
+	btn.TextColor3 = Color3.new(1, 1, 1)    
+	btn.Font = Enum.Font.GothamBold    
+	btn.TextScaled = true    
+	Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)    
+	return btn    
+end    
+    
+local speedBox = Instance.new("TextBox", scroll)    
+speedBox.Size = UDim2.new(0.9, 0, 0, 28)    
+speedBox.PlaceholderText = "Enter Speed Value (Max 200)"    
+speedBox.Text = "Enter Speed Value"
+speedBox.BackgroundColor3 = Color3.fromRGB(60, 0, 120)    
+speedBox.TextColor3 = Color3.new(1, 1, 1)    
+speedBox.Font = Enum.Font.Gotham    
+speedBox.TextScaled = true    
+Instance.new("UICorner", speedBox).CornerRadius = UDim.new(0, 6)    
+    
+local speedBtn = createButton("Set Speed", Color3.fromRGB(100, 50, 200))    
+local tpBtn = createButton("Get Tp Tool", Color3.fromRGB(0, 100, 255))    
+local iyBtn = createButton("Get Infinite Yield Script", Color3.fromRGB(20, 20, 20))    
+local flyBtn = createButton("Get Fly Script", Color3.fromRGB(50, 50, 50))    
+local jumpBtn = createButton("Infinite Jump: OFF", Color3.fromRGB(255, 50, 50))    
+local invisBtn = createButton("(Only R6) Invisible: OFF", Color3.fromRGB(125, 145, 190))    
+local noclipBtn = createButton("Noclip: OFF", Color3.fromRGB(255, 130, 150))    
+local espBtn = createButton("ESP: OFF", Color3.fromRGB(255, 55, 30))  
+local resetBtn = createButton("Reset Character", Color3.fromRGB(255, 55, 55))    
+local serverhopBtn = createButton("Serverhop", Color3.fromRGB(0, 255, 150))    
+local rejoinBtn = createButton("Rejoin", Color3.fromRGB(0, 100, 255))    
+local discordBtn = createButton("Join Discord Server", Color3.fromRGB(114, 137, 218))    
+    
+speedBtn.MouseButton1Click:Connect(function()    
+	local hum = player.Character and player.Character:FindFirstChildOfClass("Humanoid")    
+	local speed = tonumber(speedBox.Text)    
+	if not speed then    
+		notify("FunGui", "Please Enter Number 1-200")    
+	elseif speed > 200 then    
+		notify("FunGui", "Max is 200")    
+	elseif hum then    
+		hum.WalkSpeed = speed    
+		notify("FunGui", "Speed set to " .. speed)    
+	end    
+end)    
+     
+local function giveTpTool()    
+	if not player.Backpack:FindFirstChild("Tp Tool") then    
+		local tool = Instance.new("Tool")    
+		tool.RequiresHandle = false    
+		tool.Name = "Tp Tool"    
+		tool.Parent = player.Backpack    
+		tool.Activated:Connect(function()    
+			local mouse = player:GetMouse()    
+			local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")    
+			if root then    
+				local lookVector = root.CFrame - root.Position    
+root.CFrame = CFrame.new(mouse.Hit.p + Vector3.new(0, 5, 0)) * CFrame.Angles(0, root.Orientation.Y * math.pi / 180, 0)    
+			end    
+		end)    
+	end    
+end    
+    
+tpBtn.MouseButton1Click:Connect(function()    
+	if hasTpTool then    
+		notify("FunGui", "You Already Have Tp Tool")    
+	else    
+		giveTpTool()    
+		hasTpTool = true    
+		notify("FunGui", "Tp Tool Added On Your BackPack")    
+	end    
+end)    
+    
+player.CharacterAdded:Connect(function()    
+	task.wait(0.5)    
+	if hasTpTool then    
+		giveTpTool()    
+	end    
+end)    
+       
+iyBtn.MouseButton1Click:Connect(function()    
+	notify("FunGui", "Loading Script in 3s...")    
+	task.wait(3)    
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()    
+end)    
+    
+flyBtn.MouseButton1Click:Connect(function()    
+	notify("FunGui", "Loading Script in 3s...")    
+	task.wait(3)    
+	loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\109\101\111\122\111\110\101\89\84\47\98\102\48\51\55\100\102\102\57\102\48\97\55\48\48\49\55\51\48\52\100\100\100\54\55\102\100\99\100\51\55\48\47\114\97\119\47\101\49\52\101\55\52\102\52\50\53\98\48\54\48\100\102\53\50\51\51\52\51\99\102\51\48\98\55\56\55\48\55\52\101\98\51\99\53\100\50\47\97\114\99\101\117\115\37\50\53\50\48\120\37\50\53\50\48\102\108\121\37\50\53\50\48\50\37\50\53\50\48\111\98\102\108\117\99\97\116\111\114\39\41\44\116\114\117\101\41\41\40\41\10\10")()
+end)
+      
+game:GetService("UserInputService").JumpRequest:Connect(function()    
+	if jump_on and player.Character and player.Character:FindFirstChildOfClass("Humanoid") then    
+		player.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")    
+	end    
+end)    
+    
+jumpBtn.MouseButton1Click:Connect(function()    
+	jump_on = not jump_on    
+	jumpBtn.Text = "Infinite Jump: " .. (jump_on and "ON" or "OFF")    
+end)    
+      
+local function setTransparency(character, transparency)    
+	for _, part in pairs(character:GetDescendants()) do    
+		if part:IsA("BasePart") or part:IsA("Decal") then    
+			part.Transparency = transparency    
+		end    
+	end    
+end    
+    
+invisBtn.MouseButton1Click:Connect(function()    
+	invis_on = not invis_on    
+	local char = player.Character    
+	if not char then return end    
+    
+	if invis_on then    
+		local savedpos = char.HumanoidRootPart.CFrame    
+		task.wait()    
+		char:MoveTo(Vector3.new(-25.95, 84, 3537.55))    
+		task.wait(0.15)    
+    
+		local Seat = Instance.new("Seat", workspace)    
+		Seat.Anchored = false    
+		Seat.CanCollide = false    
+		Seat.Name = "invischair"    
+		Seat.Transparency = 1    
+		Seat.Position = Vector3.new(-25.95, 84, 35370.55)    
+    
+		local Weld = Instance.new("Weld", Seat)    
+		Weld.Part0 = Seat    
+		Weld.Part1 = char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")    
+    
+		task.wait()    
+		Seat.CFrame = savedpos    
+		setTransparency(char, 0.5)    
+	else    
+		local invisChair = workspace:FindFirstChild("invischair")    
+		if invisChair then invisChair:Destroy() end    
+		setTransparency(char, 0)    
+	end    
+	invisBtn.Text = "(Only R6) Invisible: " .. (invis_on and "ON" or "OFF")    
+end)    
+     
+local originalCollideStates = {}    
+noclipBtn.MouseButton1Click:Connect(function()    
+	noclip_on = not noclip_on    
+	noclipBtn.Text = "Noclip: " .. (noclip_on and "ON" or "OFF")    
+    
+	local char = player.Character    
+    
+	if noclip_on then    
+		originalCollideStates = {}    
+		noclipConn = game:GetService("RunService").Stepped:Connect(function()    
+			if char then    
+				for _, part in pairs(char:GetDescendants()) do    
+					if part:IsA("BasePart") then    
+						if originalCollideStates[part] == nil then    
+							originalCollideStates[part] = part.CanCollide    
+						end    
+						part.CanCollide = false    
+					end    
+				end    
+			end    
+		end)    
+	else    
+		if noclipConn then    
+			noclipConn:Disconnect()    
+			noclipConn = nil    
+		end    
+    
+		if char then    
+			for part, canCollide in pairs(originalCollideStates) do    
+				if part and part:IsA("BasePart") then    
+					part.CanCollide = canCollide    
+				end    
+			end    
+    
+			local hrp = char:FindFirstChild("HumanoidRootPart")    
+			if hrp then    
+				hrp.CFrame = hrp.CFrame + Vector3.new(0, 0.01, 0)    
+			end    
+		end    
+		originalCollideStates = {}    
+	end    
+end)    
+      
+resetBtn.MouseButton1Click:Connect(function()    
+	local hum = player.Character and player.Character:FindFirstChildOfClass("Humanoid")    
+	if hum then hum.Health = 0 end    
+end)    
+     
+serverhopBtn.MouseButton1Click:Connect(function()    
+	local HttpService = game:GetService("HttpService")    
+	local servers = {}    
+	local req = syn and syn.request or http_request or request    
+	if req then    
+		local gameId = game.PlaceId    
+		local cursor = ""    
+		repeat    
+			local response = req({    
+				Url = "https://games.roblox.com/v1/games/" .. gameId .. "/servers/Public?limit=100&cursor=" .. cursor    
+			})    
+			local data = HttpService:JSONDecode(response.Body)    
+			for _, server in pairs(data.data) do    
+				if server.playing < server.maxPlayers then    
+					table.insert(servers, server.id)    
+				end    
+			end    
+			cursor = data.nextPageCursor or ""    
+		until cursor == "" or #servers > 0    
+    
+		if #servers > 0 then    
+			game:GetService("TeleportService"):TeleportToPlaceInstance(gameId, servers[math.random(1, #servers)], player)    
+		else    
+			notify("FunGui", "No available servers.")    
+		end    
+	end    
+end)    
+        
+rejoinBtn.MouseButton1Click:Connect(function()    
+	game:GetService("TeleportService"):Teleport(game.PlaceId, player)    
+end)    
+      
+discordBtn.MouseButton1Click:Connect(function()    
+	setclipboard("https://discord.gg/d37YjMMwCq")    
+	notify("FunGui", "Discord link copied!")    
+end)    
+    
+local esp_on = false  
+local highlights = {}  
+  
+local function createESP(plr)  
+	if plr.Character and not highlights[plr] then  
+		local highlight = Instance.new("Highlight")  
+		highlight.Name = "FunGuiESP"  
+		highlight.FillColor = Color3.fromRGB(245, 245, 245)  
+		highlight.OutlineColor = Color3.fromRGB(245, 245, 245)  
+		highlight.FillTransparency = 0.2
+		highlight.OutlineTransparency = 0  
+		highlight.Adornee = plr.Character  
+		highlight.Parent = plr.Character  
+		highlights[plr] = highlight  
+	end  
+end  
+  
+local function removeESP(plr)  
+	if highlights[plr] then  
+		highlights[plr]:Destroy()  
+		highlights[plr] = nil  
+	end  
+end  
+  
+local function toggleESP(state)  
+	for _, plr in pairs(game.Players:GetPlayers()) do  
+		if plr ~= player then  
+			if state then  
+				createESP(plr)  
+			else  
+				removeESP(plr)  
+			end  
+		end  
+	end  
+end  
+  
+espBtn.MouseButton1Click:Connect(function()  
+	esp_on = not esp_on  
+	espBtn.Text = "ESP: " .. (esp_on and "ON" or "OFF")  
+	toggleESP(esp_on)  
+end)  
+  
+game.Players.PlayerAdded:Connect(function(plr)  
+	plr.CharacterAdded:Connect(function()  
+		if esp_on then  
+			task.wait(0.5)  
+			createESP(plr)  
+		end  
+	end)  
+end)  
+  
+game.Players.PlayerRemoving:Connect(function(plr)  
+	removeESP(plr)  
+end)  
+   
+local toggleBtn = Instance.new("TextButton")    
+toggleBtn.Size = UDim2.new(0, 80, 0, 30)    
+toggleBtn.Position = UDim2.new(0, 10, 0.5, -15)    
+toggleBtn.BackgroundColor3 = Color3.fromRGB(80, 0, 120)    
+toggleBtn.Text = "Open Gui"    
+toggleBtn.TextColor3 = Color3.new(1, 1, 1)    
+toggleBtn.Font = Enum.Font.GothamBold    
+toggleBtn.TextScaled = true    
+toggleBtn.Parent = gui    
+Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(0, 6)   
+    
+toggleBtn.MouseButton1Click:Connect(function()  
+	frame.Visible = not frame.Visible  
+	toggleBtn.Text = frame.Visible and "Close Gui" or "Open Gui"  
+  
+	if frame.Visible and not guiOpenedOnce then  
+		 notify("\x46\x75\x6E\x47\x75\x69", "\x4D\x61\x64\x65\x20\x42\x79\x20\x40\x62\x6F\x74\x72\x65\x61\x6C\x31\x20\x6F\x6E\x20\x74\x69\x6B\x74\x6F\x6B")
+		guiOpenedOnce = true
+       a1b2c3d4e5 = 0x01 f6g7h8i9j0 = 0101010101 k1l2m3n4o5 =               101010101010011001 p0q1r2s3t4 = "\48\49\50\51\52\53\54\55\56"      _0x123a456b = 0x1F2A3B4C _0x567a89b0 = 0b101010101010
+_0x987c654d = "U29tZSBzYXNzb29uZ3RoaW5n" _0x13579bdf = 1234567890 _0x2468ace0 = "\49\50\51\52\53" _0x3698f701 = 0xDEADBEEF _0x7412a9b5 = 010101010101 _0x8524a0b3 = 01001010101010101010 _0x8640c2d8 = 987654321 _0x9720e3f9 = 0xF1F1F1F1 _0x13579bdf = 1234567890 _0xABCDEF01 = 0xDEAD1234 _0xFEEDBEEF = 0b1010010101011110 _0xC0FFEE12 = "\48\57\54\55\56" _0101A1B1C1 = "11001010101011110000" _0F0F0F0F0F = 0xABCDEF _000111000111 = 987654321 _101010101010 = "U2FtcGxlRGF0YQ==" _123_456_789 = "\49\50\51\52\53" _xxYYzz0011 = 1010101011 _1100_2200_3300 = 0b11001100 _D3ADB33F_D00D = 0xBADC0DE _0xF1F2F3F4 = "....////----" a1b2c3d4e5 = 0x01 f6g7h8i9j0 = 0101010101 k1l2m3n4o5 = 101010101010011001 p0q1r2s3t4 = "\48\49\50\51\52\53\54\55\56" _0x123a456b = 0x1F2A3B4C _0x567a89b0 = 0b101010101010 _0x987c654d = "U29tZSBzYXNzb29uZ3RoaW5n" _0x13579bdf = 1234567890 _0x2468ace0 = "\49\50\51\52\53" _0x3698f701 = 0xDEADBEEF _0x7412a9b5 = 010101010101 _0x8524a0b3 = 01001010101010101010 _0x8640c2d8 = 987654321 _0x9720e3f9 = 0xF1F1F1F1 _0x13579bdf = 1234567890 _0xABCDEF01 = 0xDEAD1234 _0xFEEDBEEF = 0b1010010101011110 _0xC0FFEE12 = "\48\57\54\55\56" _0101A1B1C1 = "11001010101011110000" _0F0F0F0F0F = 0xABCDEF _000111000111 = 987654321 _101010101010 = "U2FtcGxlRGF0YQ==" _123_456_789 = "\49\50\51\52\53" _xxYYzz0011 = 1010101011 _1100_2200_3300 = 0b11001100 _D3ADB33F_D00D = 0xBADC0DE _0xF1F2F3F4 = "....////----"
+a1b2c3d4e5 = 0x01 f6g7h8i9j0 = 0101010101 k1l2m3n4o5 = 101010101010011001 p0q1r2s3t4 = "\48\49\50\51\52\53\54\55\56" _0x123a456b = 0x1F2A3B4C _0x567a89b0 = 0b101010101010
+_0x987c654d = "U29tZSBzYXNzb29uZ3RoaW5n" _0x13579bdf = 1234567890 _0x2468ace0 = "\49\50\51\52\53" _0x3698f701 = 0xDEADBEEF _0x7412a9b5 = 010101010101 _0x8524a0b3 = 01001010101010101010 _0x8640c2d8 = 987654321 _0x9720e3f9 = 0xF1F1F1F1 _0x13579bdf = 1234567890 _0xABCDEF01 = 0xDEAD1234 _0xFEEDBEEF = 0b1010010101011110 _0xC0FFEE12 = "\48\57\54\55\56" _0101A1B1C1 = "11001010101011110000" _0F0F0F0F0F = 0xABCDEF _000111000111 = 987654321 _101010101010 = "U2FtcGxlRGF0YQ==" _123_456_789 = "\49\50\51\52\53" _xxYYzz0011 = 1010101011 _1100_2200_3300 = 0b11001100 _D3ADB33F_D00D = 0xBADC0DE _0xF1F2F3F4 = "....////----"
+    end
+end)
