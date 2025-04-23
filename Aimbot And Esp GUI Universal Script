@@ -1,0 +1,156 @@
+local Players = game:GetService("Players")  
+local RunService = game:GetService("RunService")  
+local LocalPlayer = Players.LocalPlayer  
+
+-- Prevent duplicates  
+if game.CoreGui:FindFirstChild("AimbotESP_GUI") then  
+	game.CoreGui:FindFirstChild("AimbotESP_GUI"):Destroy()  
+end  
+
+-- GUI Setup  
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)  
+ScreenGui.Name = "AimbotESP_GUI"  
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling  
+
+local MainFrame = Instance.new("Frame", ScreenGui)  
+MainFrame.Size = UDim2.new(0, 250, 0, 210)  
+MainFrame.Position = UDim2.new(0.5, -125, 0.5, -105)  
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)  
+MainFrame.BorderSizePixel = 0  
+MainFrame.Active = true  
+MainFrame.Draggable = true  
+
+local function createButton(text, y)  
+	local btn = Instance.new("TextButton", MainFrame)  
+	btn.Size = UDim2.new(1, -40, 0, 40)  
+	btn.Position = UDim2.new(0, 20, 0, y)  
+	btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)  
+	btn.TextColor3 = Color3.fromRGB(0, 0, 0)  
+	btn.Font = Enum.Font.SourceSansBold  
+	btn.TextSize = 20  
+	btn.Text = text  
+	return btn  
+end  
+
+local Title = Instance.new("TextLabel", MainFrame)  
+Title.Size = UDim2.new(1, 0, 0, 30)  
+Title.BackgroundTransparency = 1  
+Title.Text = "Aimbot + ESP GUI"  
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)  
+Title.Font = Enum.Font.SourceSansBold  
+Title.TextSize = 20  
+
+local MinimizeButton = Instance.new("TextButton", MainFrame)
+MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
+MinimizeButton.Position = UDim2.new(1, -35, 0, 0)
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+MinimizeButton.Text = "-"
+MinimizeButton.TextColor3 = Color3.new(0, 0, 0)
+MinimizeButton.Font = Enum.Font.SourceSansBold
+MinimizeButton.TextSize = 20
+
+local AimbotButton = createButton("Aimbot: OFF", 40)  
+local EspButton = createButton("ESP: OFF", 90)  
+local Esp2Button = createButton("ESP 2: OFF", 140)  
+
+local Credit = Instance.new("TextLabel", MainFrame)  
+Credit.Size = UDim2.new(1, 0, 0, 20)  
+Credit.Position = UDim2.new(0, 0, 1, -20)  
+Credit.BackgroundTransparency = 1  
+Credit.Text = "Made by @botreal1 on TikTok"  
+Credit.TextColor3 = Color3.fromRGB(255, 255, 255)  
+Credit.Font = Enum.Font.SourceSans  
+Credit.TextSize = 14  
+
+local FullSize = UDim2.new(0, 250, 0, 210)
+local MinimizedSize = UDim2.new(0, 250, 0, 30)
+
+MinimizeButton.MouseButton1Click:Connect(function()
+	Minimized = not Minimized
+	if Minimized then
+		MainFrame.Size = MinimizedSize
+	else
+		MainFrame.Size = FullSize
+	end
+	AimbotButton.Visible = not Minimized
+	EspButton.Visible = not Minimized
+	Esp2Button.Visible = not Minimized
+	Credit.Visible = not Minimized
+	MinimizeButton.Text = Minimized and "+" or "-"
+end)
+
+-- Aimbot  
+local AimbotEnabled = false  
+local function GetClosestTorso()  
+	local closest, shortest = nil, math.huge  
+	for _, p in ipairs(Players:GetPlayers()) do  
+		if p ~= LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then  
+			local dist = (LocalPlayer.Character.HumanoidRootPart.Position - p.Character.HumanoidRootPart.Position).Magnitude  
+			if dist < shortest then  
+				shortest = dist  
+				closest = p.Character.HumanoidRootPart  
+			end  
+		end  
+	end  
+	return closest  
+end  
+
+RunService.RenderStepped:Connect(function()  
+	if AimbotEnabled then  
+		local target = GetClosestTorso()  
+		if target then  
+			local cam = workspace.CurrentCamera  
+			local camPos = cam.CFrame.Position  
+			local lookVector = (target.Position - camPos).Unit  
+			cam.CFrame = CFrame.new(camPos, camPos + lookVector)  
+		end  
+	end  
+end)  
+
+AimbotButton.MouseButton1Click:Connect(function()  
+	AimbotEnabled = not AimbotEnabled  
+	AimbotButton.Text = "Aimbot: " .. (AimbotEnabled and "ON" or "OFF")  
+end)  
+
+-- ESP  
+local EspEnabled, Esp2Enabled = false, false  
+local EspBoxes, EspLines = {}, {}  
+
+local function ClearESP()  
+	for _, obj in ipairs(EspBoxes) do if obj and obj.Parent then obj:Destroy() end end  
+	for _, obj in ipairs(EspLines) do if obj and obj.Parent then obj:Destroy() end end  
+	table.clear(EspBoxes)  
+	table.clear(EspLines)  
+end  
+
+local function CreateEspBox(part, color)  
+	local box = Instance.new("BoxHandleAdornment")  
+	box.Name = "ESP_Box"  
+	box.Adornee = part  
+	box.AlwaysOnTop = true  
+	box.ZIndex = 5  
+	box.Size = part.Size  
+	box.Color3 = color or Color3.new(1, 1, 1)  
+	box.Transparency = 0.6  
+	box.Parent = part  
+	return box  
+end  
+
+local function CreateEspLine(from, to)  
+	local beam = Instance.new("Beam")  
+	beam.Attachment0 = Instance.new("Attachment", from)  
+	beam.Attachment1 = Instance.new("Attachment", to)  
+	beam.Width0, beam.Width1 = 0.1, 0.1  
+	beam.Color = ColorSequence.new(Color3.new(0, 1, 0))  
+	beam.Transparency = NumberSequence.new(0.3)  
+	beam.FaceCamera = true  
+	beam.Parent = from  
+	table.insert(EspLines, beam)  
+	return beam  
+end  
+
+local function UpdateESP()  
+	ClearESP()  
+	if EspEnabled or Esp2Enabled then  
+		for _, p in ipairs(Players:GetPlayers()) do  
+			if p ~= LocalPlayer
