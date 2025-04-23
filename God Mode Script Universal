@@ -1,0 +1,103 @@
+local I1I1I1I1 = Instance.new("ScreenGui")
+local I1I1I1I2 = Instance.new("Frame")
+local I1I1I1I3 = Instance.new("TextLabel")
+local I1I1I1I4 = Instance.new("TextButton")
+local I1I1I1I5 = Instance.new("TextLabel")
+local sound = Instance.new("Sound")
+
+I1I1I1I1.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+I1I1I1I1.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+I1I1I1I1.ResetOnSpawn = false
+
+I1I1I1I2.Parent = I1I1I1I1
+I1I1I1I2.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+I1I1I1I2.BorderSizePixel = 0
+I1I1I1I2.Position = UDim2.new(0.38, 0, 0.3, 0)
+I1I1I1I2.Size = UDim2.new(0, 220, 0, 120)
+I1I1I1I2.Active = true
+I1I1I1I2.Draggable = true
+
+I1I1I1I3.Name = "I1I1I1I3"
+I1I1I1I3.Parent = I1I1I1I2
+I1I1I1I3.BackgroundColor3 = Color3.fromRGB(25, 15, 25)
+I1I1I1I3.BorderSizePixel = 0
+I1I1I1I3.Size = UDim2.new(1, 0, 0, 25)
+I1I1I1I3.Font = Enum.Font.SourceSansBold
+I1I1I1I3.Text = "God Mode Script Universal"
+I1I1I1I3.TextColor3 = Color3.fromRGB(255, 255, 255)
+I1I1I1I3.TextSize = 18.000
+
+I1I1I1I4.Parent = I1I1I1I2
+I1I1I1I4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+I1I1I1I4.BorderSizePixel = 0
+I1I1I1I4.Position = UDim2.new(0.5, -77.5, 0.5, -22.5)
+I1I1I1I4.Size = UDim2.new(0, 155, 0, 45)
+I1I1I1I4.Font = Enum.Font.SourceSansItalic
+I1I1I1I4.Text = "God Mode: OFF"
+I1I1I1I4.TextColor3 = Color3.fromRGB(0, 0, 0)
+I1I1I1I4.TextSize = 18.000
+
+I1I1I1I5.Name = "I1I1I1I5"
+I1I1I1I5.Parent = I1I1I1I2
+I1I1I1I5.BackgroundColor3 = Color3.fromRGB(25, 15, 25)
+I1I1I1I5.BorderSizePixel = 0
+I1I1I1I5.Position = UDim2.new(0, 0, 1, -20)
+I1I1I1I5.Size = UDim2.new(1, 0, 0, 20)
+I1I1I1I5.Font = Enum.Font.SourceSans
+I1I1I1I5.Text = string.char(77, 97, 100, 101, 32, 98, 121, 32, 64, 98, 111, 116, 114, 101, 97, 108, 49, 32, 111, 110, 32, 84, 105, 107, 84, 111, 107)
+I1I1I1I5.TextColor3 = Color3.fromRGB(255, 255, 255)
+I1I1I1I5.TextSize = 18.000
+
+sound.Parent = I1I1I1I4
+sound.SoundId = "rbxassetid://12221967"
+sound.Volume = 1.1
+
+local function I1I1I1I_script()
+	local I1script = Instance.new("LocalScript", I1I1I1I4)
+
+	local I1player = game:GetService("Players").LocalPlayer
+	local I1enabled = true
+
+	local I1button = I1script.Parent
+
+	local function I1updateText()
+		I1button.Text = I1enabled and "God Mode: OFF" or "God Mode: ON"
+	end
+  I1button.MouseButton1Click:Connect(function()
+        sound:Play()
+        I1toggle()
+    end)
+
+	local function I1toggle()
+		I1enabled = not I1enabled
+		I1updateText()
+	end
+
+	I1button.MouseButton1Click:Connect(function()
+		I1toggle()
+	end)
+
+	local function I1apply()
+		while task.wait() do
+			local I1char = I1player.Character or I1player.CharacterAdded:Wait()
+			local I1root = I1char:WaitForChild("HumanoidRootPart")
+			for _, I1part in ipairs(workspace:GetPartBoundsInRadius(I1root.Position, 10)) do
+				I1part.CanTouch = I1enabled
+			end
+		end
+	end
+
+	I1player.CharacterAdded:Connect(function()
+		I1apply()
+		I1updateText()
+	end)
+
+	I1apply()
+	I1updateText()
+end
+coroutine.wrap(I1I1I1I_script)()
+
+a1b2c3d4e5 = 0x01 f6g7h8i9j0 = 0101010101 k1l2m3n4o5 =               101010101010011001 p0q1r2s3t4 = "\48\49\50\51\52\53\54\55\56"      _0x123a456b = 0x1F2A3B4C _0x567a89b0 = 0b101010101010
+_0x987c654d = "U29tZSBzYXNzb29uZ3RoaW5n" _0x13579bdf = 1234567890 _0x2468ace0 = "\49\50\51\52\53" _0x3698f701 = 0xDEADBEEF _0x7412a9b5 = 010101010101 _0x8524a0b3 = 01001010101010101010 _0x8640c2d8 = 987654321 _0x9720e3f9 = 0xF1F1F1F1 _0x13579bdf = 1234567890 _0xABCDEF01 = 0xDEAD1234 _0xFEEDBEEF = 0b1010010101011110 _0xC0FFEE12 = "\48\57\54\55\56" _0101A1B1C1 = "11001010101011110000" _0F0F0F0F0F = 0xABCDEF _000111000111 = 987654321 _101010101010 = "U2FtcGxlRGF0YQ==" _123_456_789 = "\49\50\51\52\53" _xxYYzz0011 = 1010101011 _1100_2200_3300 = 0b11001100 _D3ADB33F_D00D = 0xBADC0DE _0xF1F2F3F4 = "....////----" a1b2c3d4e5 = 0x01 f6g7h8i9j0 = 0101010101 k1l2m3n4o5 = 101010101010011001 p0q1r2s3t4 = "\48\49\50\51\52\53\54\55\56" _0x123a456b = 0x1F2A3B4C _0x567a89b0 = 0b101010101010 _0x987c654d = "U29tZSBzYXNzb29uZ3RoaW5n" _0x13579bdf = 1234567890 _0x2468ace0 = "\49\50\51\52\53" _0x3698f701 = 0xDEADBEEF _0x7412a9b5 = 010101010101 _0x8524a0b3 = 01001010101010101010 _0x8640c2d8 = 987654321 _0x9720e3f9 = 0xF1F1F1F1 _0x13579bdf = 1234567890 _0xABCDEF01 = 0xDEAD1234 _0xFEEDBEEF = 0b1010010101011110 _0xC0FFEE12 = "\48\57\54\55\56" _0101A1B1C1 = "11001010101011110000" _0F0F0F0F0F = 0xABCDEF _000111000111 = 987654321 _101010101010 = "U2FtcGxlRGF0YQ==" _123_456_789 = "\49\50\51\52\53" _xxYYzz0011 = 1010101011 _1100_2200_3300 = 0b11001100 _D3ADB33F_D00D = 0xBADC0DE _0xF1F2F3F4 = "....////----"
+a1b2c3d4e5 = 0x01 f6g7h8i9j0 = 0101010101 k1l2m3n4o5 = 101010101010011001 p0q1r2s3t4 = "\48\49\50\51\52\53\54\55\56" _0x123a456b = 0x1F2A3B4C _0x567a89b0 = 0b101010101010
+_0x987c654d = "U29tZSBzYXNzb29uZ3RoaW5n" _0x13579bdf = 1234567890 _0x2468ace0 = "\49\50\51\52\53" _0x3698f701 = 0xDEADBEEF _0x7412a9b5 = 010101010101 _0x8524a0b3 = 01001010101010101010 _0x8640c2d8 = 987654321 _0x9720e3f9 = 0xF1F1F1F1 _0x13579bdf = 1234567890 _0xABCDEF01 = 0xDEAD1234 _0xFEEDBEEF = 0b1010010101011110 _0xC0FFEE12 = "\48\57\54\55\56" _0101A1B1C1 = "11001010101011110000" _0F0F0F0F0F = 0xABCDEF _000111000111 = 987654321 _101010101010 = "U2FtcGxlRGF0YQ==" _123_456_789 = "\49\50\51\52\53" _xxYYzz0011 = 1010101011 _1100_2200_3300 = 0b11001100 _D3ADB33F_D00D = 0xBADC0DE _0xF1F2F3F4 = "....////----"
