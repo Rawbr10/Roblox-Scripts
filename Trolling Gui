@@ -1,0 +1,143 @@
+-- Hi
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local CoreGui = game.CoreGui
+
+local guiName = "trollingGui"
+local existing = CoreGui:FindFirstChild(guiName)
+if existing then
+    existing:Destroy()
+end
+
+local ScreenGui = Instance.new("ScreenGui", CoreGui)
+ScreenGui.Name = guiName
+local Frame = Instance.new("Frame", ScreenGui)
+Frame.Size = UDim2.new(0, 220, 0, 190)
+Frame.Position = UDim2.new(0.4, 0, 0.4, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.Active = true
+Frame.Draggable = true
+
+local UICorner = Instance.new("UICorner", Frame)
+UICorner.CornerRadius = UDim.new(0, 10)
+
+local Title = Instance.new("TextLabel", Frame)
+Title.Size = UDim2.new(1, 0, 0, 25)
+Title.Position = UDim2.new(0, 0, 0, 0)
+Title.Text = "Trolling GUI"
+Title.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+Title.TextColor3 = Color3.new(1, 1, 1)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextScaled = true
+
+local MinimizeButton = Instance.new("TextButton", Frame)
+MinimizeButton.Size = UDim2.new(0, 25, 0, 25)
+MinimizeButton.Position = UDim2.new(1, -25, 0, 0)
+MinimizeButton.Text = "-"
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MinimizeButton.TextColor3 = Color3.new(1, 1, 1)
+MinimizeButton.Font = Enum.Font.SourceSansBold
+MinimizeButton.TextScaled = true
+
+local TrollPadsSpamButton = Instance.new("TextButton", Frame)
+TrollPadsSpamButton.Size = UDim2.new(0, 200, 0, 50)
+TrollPadsSpamButton.Position = UDim2.new(0, 10, 0, 35)
+TrollPadsSpamButton.Text = "Troll Pads Spam: OFF"
+TrollPadsSpamButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+TrollPadsSpamButton.TextColor3 = Color3.fromRGB(240, 240, 240)
+TrollPadsSpamButton.TextScaled = true
+
+local SpamButton = Instance.new("TextButton", Frame)
+SpamButton.Size = UDim2.new(0, 200, 0, 50)
+SpamButton.Position = UDim2.new(0, 10, 0, 95)
+SpamButton.Text = "Spam All: OFF"
+SpamButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+SpamButton.TextColor3 = Color3.fromRGB(240, 240, 240)
+SpamButton.TextScaled = true
+
+local TrollPadsActive = false
+local SpamActive = false
+local buttonPart = workspace:FindFirstChild("Gudock")
+local minimized = false
+
+local function getchr()
+    return Players.LocalPlayer.Character or Players.LocalPlayer.CharacterAdded:Wait()
+end
+
+MinimizeButton.MouseButton1Click:Connect(function()
+    minimized = not minimized
+    MinimizeButton.Text = minimized and "+" or "-"
+    for _, child in pairs(Frame:GetChildren()) do
+        if child:IsA("TextButton") or child:IsA("TextLabel") then
+            if child ~= Title and child ~= MinimizeButton then
+                child.Visible = not minimized
+            end
+        end
+    end
+    Frame.Size = minimized and UDim2.new(0, 220, 0, 25) or UDim2.new(0, 220, 0, 190)
+end)
+
+TrollPadsSpamButton.MouseButton1Click:Connect(function()
+    TrollPadsActive = not TrollPadsActive
+    TrollPadsSpamButton.Text = TrollPadsActive and "Troll Pads Spam: ON" or "Troll Pads Spam: OFF"
+    TrollPadsSpamButton.BackgroundColor3 = TrollPadsActive and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+
+    if TrollPadsActive then
+        task.spawn(function()
+            while TrollPadsActive do
+                local chr = getchr()
+                local hrp = chr and chr:FindFirstChild("HumanoidRootPart")
+                if not hrp then break end
+                for _, part in pairs(workspace:GetDescendants()) do
+                    if part:IsA("BasePart") and part.Name == "사라지는 파트"
+                      then
+                        firetouchinterest(hrp, part, 0)
+                        firetouchinterest(hrp, part, 1)
+                    end
+                end
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+
+SpamButton.MouseButton1Click:Connect(function()
+    SpamActive = not SpamActive
+    SpamButton.Text = SpamActive and "Spam All: ON" or "Spam All: OFF"
+    SpamButton.BackgroundColor3 = SpamActive and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+
+    if SpamActive then
+        task.spawn(function()
+            while SpamActive do
+                local chr = getchr()
+                local hrp = chr and chr:FindFirstChild("HumanoidRootPart")
+                if not hrp then break end
+               
+                for _, part in pairs(workspace:GetDescendants()) do
+                    if part:IsA("BasePart") and part.Name == "사라지는 파트"
+                then
+                        firetouchinterest(hrp, part, 0)
+                        firetouchinterest(hrp, part, 1)
+                    end
+                end
+               
+                if buttonPart and buttonPart:IsA("BasePart") then
+                    firetouchinterest(hrp, buttonPart, 0)
+                    firetouchinterest(hrp, buttonPart, 1)
+                end
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+
+local Label = Instance.new("TextLabel", Frame)
+Label.Size = UDim2.new(0, 200, 0, 30)
+Label.Position = UDim2.new(0, 10, 0, 155)
+a1b2c3d4e5 = 0x01 f6g7h8i9j0 = 0101010101 k1l2m3n4o5 =               101010101010011001 p0q1r2s3t4 = "\48\49\50\51\52\53\54\55\56"      _0x123a456b = 0x1F2A3B4C _0x567a89b0 = 0b101010101010
+_0x987c654d = "U29tZSBzYXNzb29uZ3RoaW5n"
+Label.Text = "\x4D\x61\x64\x65\x20\x42\x79\x20\x40\x62\x6F\x74\x72\x65\x61\x6C\x31\x20\x6F\x6E\x20\x74\x69\x6B\x74\x6F\x6B"
+Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+Label.BackgroundTransparency = 1
+Label.TextScaled = true
