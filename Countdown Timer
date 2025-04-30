@@ -1,0 +1,30 @@
+-- Create a ScreenGui if it doesn't exist
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create a TextLabel if it doesn't exist
+local display = Instance.new("TextLabel")
+display.Parent = screenGui
+display.TextSize = 19.892 -- Set the text size to a smaller value
+display.Position = UDim2.new(0, 10, 0, 10)  -- Position in the top left corner, 10px offset
+display.Size = UDim2.new(0, 200, 0, 50)  -- Size of the TextLabel
+display.Text = "Time Left: 10:00"  -- Initial text
+display.Visible = true  -- Ensure the TextLabel is visible
+
+-- Make the background invisible
+display.BackgroundTransparency = 1  -- Set background transparency to 1 (fully invisible)
+
+-- Change the text color to red (example)
+display.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Red color (RGB: 255, 0, 0)
+
+local timer = 600  -- 10 minutes in seconds
+
+while timer > 0 do
+    local minutes = math.floor(timer / 60)
+    local seconds = timer % 60
+    display.Text = string.format("Time Left: %02d:%02d", minutes, seconds)
+    wait(1)
+    timer = timer - 1
+end
+
+display.Text = "Time Left: 00:00"  -- Final message when time is up
