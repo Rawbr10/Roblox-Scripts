@@ -170,5 +170,5 @@ end
 task.wait(2)
 
 local teleportService = game:GetService("TeleportService")
-local placeId = 8737899175
+local placeId = 116495829188952
 teleportService:Teleport(placeId, player)
