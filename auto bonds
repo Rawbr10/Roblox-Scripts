@@ -168,7 +168,7 @@ while (zStep < 0 and z >= zEnd) or (zStep > 0 and z <= zEnd) do
 	direction *= -1
 end
 
-task.wait(2)
+task.wait(3)
 
 local teleportService = game:GetService("TeleportService")
 local placeId = 116495829188952
