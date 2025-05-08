@@ -1,27 +1,31 @@
--- Create the ScreenGui
 local gui = Instance.new("ScreenGui")
 gui.Name = "NotificationGui"
 gui.ResetOnSpawn = false
+gui.IgnoreGuiInset = true -- Makes the background cover the full screen
 gui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
 
--- Create a function to make centered TextLabels
-local function createCenteredLabel(text, order)
-    local label = Instance.new("TextLabel")
-    label.Size = UDim2.new(0.4, 0, 0.11, 0)
-    label.Position = UDim2.new(0.3, 0, 0.45 + (order * 0.06), 0)
-    label.BackgroundTransparency = 1
-    label.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    label.Font = Enum.Font.GothamBold
-    label.TextScaled = true
-    label.Text = text
-    label.Parent = gui
+-- Full-screen solid gray background
+local background = Instance.new("Frame")
+background.Size = UDim2.new(1, 0, 1, 0)
+background.Position = UDim2.new(0, 0, 0, 0)
+background.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+background.BackgroundTransparency = 0 -- Fully visible
+background.ZIndex = 0
+background.Parent = gui
 
-    task.delay(700, function()
-        if label then label:Destroy() end
-    end)
-end
+-- Single centered message
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(0.6, 0, 0.09, 0)
+label.Position = UDim2.new(0.21, 0, 0.25, 0)
+label.BackgroundTransparency = 1
+label.TextColor3 = Color3.fromRGB(255, 255, 255)
+label.Font = Enum.Font.GothamBold
+label.TextScaled = true
+label.Text = "Script Made By XZOfficialC"
+label.ZIndex = 1
+label.Parent = gui
 
--- Show both messages
-createCenteredLabel("Script Made By XZOfficialC", -7.6)
-createCenteredLabel("Please do not jump or else it will broke the method that collects the bonds and if you notice that it jumps don't worry it's normal and if you jump you will need to rejoin.", -5.8)
+-- Auto-remove after 10 seconds
+task.delay(800, function()
+    gui:Destroy()
+end)
