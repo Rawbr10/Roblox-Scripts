@@ -17,8 +17,7 @@ bondLabel.TextScaled = true
 bondLabel.Font = Enum.Font.SourceSansBold
 bondLabel.TextColor3 = Color3.new(1, 1, 1)
 bondLabel.TextStrokeTransparency = 0.5
-bondLabel.Text = "Bond Collected: 0"
-bondLabel.ZIndex = 999
+bondLabel.Text = "Bonds Collected: 0"
 bondLabel.Parent = screenGui
 
 local player = Players.LocalPlayer
