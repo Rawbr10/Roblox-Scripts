@@ -43,4 +43,4 @@ Load("https://raw.githubusercontent.com/Gazer-Ha/Gaze-stuff/refs/heads/main/Get%
 while not _G.CannonFound do
     task.wait()
 end
-Load("https://raw.githubusercontent.com/Gazer-Ha/Gaze-stuff/refs/heads/main/Bondie%20farmy")
+Load("https://raw.githubusercontent.com/Rawbr10/Roblox-Scripts/refs/heads/main/auto%20bonds")
