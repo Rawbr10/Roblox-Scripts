@@ -1,0 +1,27 @@
+-- Create the ScreenGui
+local gui = Instance.new("ScreenGui")
+gui.Name = "NotificationGui"
+gui.ResetOnSpawn = false
+gui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create a function to make centered TextLabels
+local function createCenteredLabel(text, order)
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(0.4, 0, 0.11, 0)
+    label.Position = UDim2.new(0.3, 0, 0.45 + (order * 0.06), 0)
+    label.BackgroundTransparency = 1
+    label.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.Font = Enum.Font.GothamBold
+    label.TextScaled = true
+    label.Text = text
+    label.Parent = gui
+
+    task.delay(700, function()
+        if label then label:Destroy() end
+    end)
+end
+
+-- Show both messages
+createCenteredLabel("Script Made By XZOfficialC", -7.6)
+createCenteredLabel("Please do not jump or else it will broke the method that collects the bonds and if you notice that it jumps don't worry it's normal and if you jump you will need to rejoin.", -5.8)
