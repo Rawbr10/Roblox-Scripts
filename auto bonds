@@ -18,6 +18,7 @@ bondLabel.Font = Enum.Font.SourceSansBold
 bondLabel.TextColor3 = Color3.new(1, 1, 1)
 bondLabel.TextStrokeTransparency = 0.5
 bondLabel.Text = "Bonds Collected: 0"
+bondLabel.ZIndex = 1
 bondLabel.Parent = screenGui
 
 local player = Players.LocalPlayer
@@ -62,7 +63,7 @@ task.spawn(function()
 end)
 
 
-local bondCount = 0  -- Useless?
+local bondCount = 0
 
 -- Teleport to Bond and activate (loop until taken or timeout)
 local function teleportTo(bond)
@@ -80,7 +81,7 @@ local function teleportTo(bond)
 	if not bond.Parent then
 		bondCount += 1
 		bondLabel.Text = "Bond Collected: " .. bondCount
-		print("Bond taken! Total:", bondCount)
+		print("Bonds taken! Total:", bondCount)
 	else
 		print("Failed to take bond within timeout.")
 	end
