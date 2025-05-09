@@ -1,4 +1,5 @@
 local gui = Instance.new("ScreenGui")
+gui.DisplayOrder = 9999
 gui.Name = "NotificationGui"
 gui.ResetOnSpawn = false
 gui.IgnoreGuiInset = true -- Makes the background cover the full screen
